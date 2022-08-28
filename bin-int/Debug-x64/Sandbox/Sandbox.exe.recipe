@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\ZThomas\Dev\Cpp\HaZel\bin\Debug-x64\HaZel\HaZel.dll</FullPath>
+      <FullPath>C:\Users\ZThomas\Dev\Cpp\Hazzel\bin\Debug-x64\Hazzel\Hazzel.dll</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\ZThomas\Dev\Cpp\HaZel\bin\Debug-x64\Sandbox\Sandbox.exe</FullPath>
+      <FullPath>C:\Users\ZThomas\Dev\Cpp\Hazzel\bin\Debug-x64\Sandbox\Sandbox.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

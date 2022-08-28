@@ -1,10 +1,10 @@
 #include "Test.h"
 #include <stdio.h>
 
-namespace HaZel
+namespace Hazzel
 {
 	void Print()
 	{
-		printf("Welcome to HaZel Engine!");
+		printf("Welcome to Hazzel Engine!");
 	}
 }

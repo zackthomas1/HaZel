@@ -1,6 +1,6 @@
 #pragma once
 
-namespace HaZel
+namespace Hazzel
 {
  	_declspec(dllexport) void Print();
 }

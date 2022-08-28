@@ -82,12 +82,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HaZel\HaZel.vcxproj">
-      <Project>{3beac753-47e8-41f2-92d6-83e3fe1a73b8}</Project>
-    </ProjectReference>
+    <ClCompile Include="src\Application.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp" />
+    <ProjectReference Include="..\Hazzel\Hazzel.vcxproj">
+      <Project>{3beac753-47e8-41f2-92d6-83e3fe1a73b8}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

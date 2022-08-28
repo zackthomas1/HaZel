@@ -1,5 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
   Test.cpp
-     Creating library C:\Users\ZThomas\Dev\Cpp\HaZel\bin\Debug-x64\HaZel\HaZel.lib and object C:\Users\ZThomas\Dev\Cpp\HaZel\bin\Debug-x64\HaZel\HaZel.exp
-  HaZel.vcxproj -> C:\Users\ZThomas\Dev\Cpp\HaZel\bin\Debug-x64\HaZel\HaZel.dll
+     Creating library C:\Users\ZThomas\Dev\Cpp\Hazzel\bin\Debug-x64\Hazzel\Hazzel.lib and object C:\Users\ZThomas\Dev\Cpp\Hazzel\bin\Debug-x64\Hazzel\Hazzel.exp
+  Hazzel.vcxproj -> C:\Users\ZThomas\Dev\Cpp\Hazzel\bin\Debug-x64\Hazzel\Hazzel.dll
