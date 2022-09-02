@@ -21,7 +21,6 @@ namespace Hazzel{
 	};
 }
 
-
 // Core log macros
 #define HZ_CORE_TRACE(...)		::Hazzel::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define HZ_CORE_INFO(...)		::Hazzel::Log::GetCoreLogger()->info(__VA_ARGS__)
