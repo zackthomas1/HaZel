@@ -19,6 +19,9 @@ project "Hazzel"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "hzpch.h"
+	pchsource "Hazzel/src/hzpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -27,6 +30,7 @@ project "Hazzel"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include"
 	}
 
