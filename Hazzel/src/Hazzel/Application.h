@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Events/Event.h"
+#include "Window.h"
 
 namespace Hazzel {
 	class HAZZEL_API Application
@@ -13,7 +14,8 @@ namespace Hazzel {
 		void Run();
 
 	private: 
-
+		std::unique_ptr<Window> m_Window;
+		bool m_Running = true;
 	};
 
 	// to be defined in CLIENT

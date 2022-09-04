@@ -13,7 +13,6 @@ int main(int argc, char** argv)
 	auto app = Hazzel::CreateApplication();
 	app->Run();
 	delete app;
-	
 }
 
 #endif
