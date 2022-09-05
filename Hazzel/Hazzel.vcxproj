@@ -158,11 +158,13 @@
     <ClInclude Include="src\Hazzel\Events\KeyEvent.h" />
     <ClInclude Include="src\Hazzel\Events\MouseEvent.h" />
     <ClInclude Include="src\Hazzel\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Hazzel\Input.h" />
     <ClInclude Include="src\Hazzel\Layer.h" />
     <ClInclude Include="src\Hazzel\LayerStack.h" />
     <ClInclude Include="src\Hazzel\Log.h" />
     <ClInclude Include="src\Hazzel\Window.h" />
     <ClInclude Include="src\Platform\OpenGl\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\hzpch.h" />
   </ItemGroup>
@@ -173,6 +175,7 @@
     <ClCompile Include="src\Hazzel\LayerStack.cpp" />
     <ClCompile Include="src\Hazzel\Log.cpp" />
     <ClCompile Include="src\Platform\OpenGl\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\hzpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

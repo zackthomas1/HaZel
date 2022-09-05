@@ -22,7 +22,7 @@ class Sandbox : public Hazzel::Application
 public:
 	Sandbox()
 	{
-		//PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer()); 			// TESTING: layers and layerstack
 		PushLayer(new Hazzel::ImGuiLayer());
 	}
 
@@ -36,4 +36,5 @@ public:
 Hazzel::Application* Hazzel::CreateApplication()
 {
 	return new Sandbox();
+
 }

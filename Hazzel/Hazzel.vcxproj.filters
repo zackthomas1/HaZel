@@ -46,6 +46,9 @@
     <ClInclude Include="src\Hazzel\ImGui\ImGuiLayer.h">
       <Filter>Hazzel\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hazzel\Input.h">
+      <Filter>Hazzel</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hazzel\Layer.h">
       <Filter>Hazzel</Filter>
     </ClInclude>
@@ -60,6 +63,9 @@
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGl\ImGuiOpenGLRenderer.h">
       <Filter>Platform\OpenGl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
@@ -84,6 +90,9 @@
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGl\ImGuiOpenGLRenderer.cpp">
       <Filter>Platform\OpenGl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
