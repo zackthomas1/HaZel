@@ -1,6 +1,7 @@
 -- premake5.lua
 workspace "Hazzel"
 	architecture "x64"
+	startproject "Sandbox"
 
 	configurations
 	{
@@ -9,7 +10,6 @@ workspace "Hazzel"
 		"Dist"
 	}
 
-	startproject "Sandbox"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -19,14 +19,17 @@ IncludeDir["GLFW"] = "Hazzel/vendor/GLFW/include"
 IncludeDir["glad"] = "Hazzel/vendor/glad/include"
 IncludeDir["ImGui"] = "Hazzel/vendor/imgui"
 
-include "Hazzel/vendor/GLFW"
-include "Hazzel/vendor/glad"
-include "Hazzel/vendor/imgui"
+group "Dependencies"
+	include "Hazzel/vendor/GLFW"
+	include "Hazzel/vendor/glad"
+	include "Hazzel/vendor/imgui"
+group ""
 
 project "Hazzel"
 	location "Hazzel"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -59,7 +62,6 @@ project "Hazzel"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -71,22 +73,22 @@ project "Hazzel"
 
 		postbuildcommands 
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"
 		defines {"HZ_DEBUG", "HZ_ENABLE_ASSERTS"}
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "HZ_REALEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 	
 	filter "configurations:Dist"
 		defines "HZ_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 
@@ -94,6 +96,7 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -127,16 +130,16 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "HZ_REALEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 	
 	filter "configurations:Dist"
 		defines "HZ_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
