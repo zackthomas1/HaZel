@@ -1,4 +1,4 @@
-#include "Hazzel.h"
+#include <Hazzel.h>
 
 class ExampleLayer : public Hazzel::Layer 
 {
@@ -8,12 +8,20 @@ public:
 
 	void OnUpdate() override
 	{
-		HZ_INFO("ExampleLayer::Update");
+		if (Hazzel::Input::IsKeyPressed(HZ_KEY_TAB))
+			HZ_TRACE("Tab key is pressed (poll)!");
 	}
 
 	void OnEvent(Hazzel::Event& event) override
 	{
-		HZ_TRACE("{0}", event);
+		if (event.GetEventType() == Hazzel::EventType::KeyPressed)
+		{
+			Hazzel::KeyPressedEvent& e = (Hazzel::KeyPressedEvent&) event;
+			
+			if(e.GetKeyCode() == HZ_KEY_TAB)
+				HZ_TRACE("Tab key is pressed (event)!");
+			HZ_TRACE("{0}", (char)e.GetKeyCode());
+		}
 	}
 };
 
@@ -22,7 +30,7 @@ class Sandbox : public Hazzel::Application
 public:
 	Sandbox()
 	{
-		//PushLayer(new ExampleLayer()); 			// TESTING: layers and layerstack
+		PushLayer(new ExampleLayer()); 			// TESTING: layers/layerstack and HZ keycodes
 		PushLayer(new Hazzel::ImGuiLayer());
 	}
 
@@ -30,7 +38,6 @@ public:
 	{
 
 	}
-
 };
 
 Hazzel::Application* Hazzel::CreateApplication()

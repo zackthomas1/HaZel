@@ -31,9 +31,9 @@ namespace Hazzel {
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
-			// TESTING: input class
-			auto [x, y] = Input::GetMousePosition();
-			HZ_CORE_TRACE("{0}, {1}", x, y);
+			//// TESTING: input class
+			//auto [x, y] = Input::GetMousePosition();
+			//HZ_CORE_TRACE("{0}, {1}", x, y);
 
 			m_Window->OnUpdate();
 		}

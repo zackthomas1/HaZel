@@ -159,9 +159,11 @@
     <ClInclude Include="src\Hazzel\Events\MouseEvent.h" />
     <ClInclude Include="src\Hazzel\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Hazzel\Input.h" />
+    <ClInclude Include="src\Hazzel\KeyCodes.h" />
     <ClInclude Include="src\Hazzel\Layer.h" />
     <ClInclude Include="src\Hazzel\LayerStack.h" />
     <ClInclude Include="src\Hazzel\Log.h" />
+    <ClInclude Include="src\Hazzel\MouseButonCodes.h" />
     <ClInclude Include="src\Hazzel\Window.h" />
     <ClInclude Include="src\Platform\OpenGl\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
