@@ -8,6 +8,7 @@ public:
 
 	void OnUpdate() override
 	{
+
 		if (Hazzel::Input::IsKeyPressed(HZ_KEY_TAB))
 			HZ_TRACE("Tab key is pressed (poll)!");
 	}
