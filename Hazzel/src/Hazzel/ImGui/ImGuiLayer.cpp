@@ -91,7 +91,6 @@ namespace Hazzel {
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
-
 	}
 
 }

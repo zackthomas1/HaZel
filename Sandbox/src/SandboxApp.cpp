@@ -52,5 +52,4 @@ public:
 Hazzel::Application* Hazzel::CreateApplication()
 {
 	return new Sandbox();
-
 }

@@ -140,6 +140,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGl\OpenGLContext.h" />
     <ClInclude Include="src\Hazzel.h" />
     <ClInclude Include="src\Hazzel\Application.h" />
     <ClInclude Include="src\Hazzel\Core.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="src\Hazzel\LayerStack.h" />
     <ClInclude Include="src\Hazzel\Log.h" />
     <ClInclude Include="src\Hazzel\MouseButonCodes.h" />
+    <ClInclude Include="src\Hazzel\Renderer\GraphicContext.h" />
     <ClInclude Include="src\Hazzel\Window.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -576,6 +578,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGl\OpenGLContext.cpp" />
     <ClCompile Include="src\Hazzel\Application.cpp" />
     <ClCompile Include="src\Hazzel\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Hazzel\ImGui\ImGuiLayer.cpp" />
