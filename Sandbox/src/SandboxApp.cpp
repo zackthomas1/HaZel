@@ -1,5 +1,7 @@
 #include <Hazzel.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Hazzel::Layer 
 {
 public:
@@ -11,6 +13,13 @@ public:
 
 		if (Hazzel::Input::IsKeyPressed(HZ_KEY_TAB))
 			HZ_TRACE("Tab key is pressed (poll)!");
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Test!");
+		ImGui::Text("Hello World");
+		ImGui::End();
 	}
 
 	void OnEvent(Hazzel::Event& event) override
@@ -32,7 +41,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer()); 			// TESTING: layers/layerstack and HZ keycodes
-		PushLayer(new Hazzel::ImGuiLayer());
 	}
 
 	~Sandbox()

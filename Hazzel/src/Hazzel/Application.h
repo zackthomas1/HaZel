@@ -3,9 +3,11 @@
 #include "Core.h"
 
 #include "Window.h"
-#include "Hazzel/LayerStack.h"
+#include "LayerStack.h"
 #include "Events/Event.h"
-#include "Hazzel/Events/ApplicationEvent.h"
+#include "Events/ApplicationEvent.h"
+
+#include "ImGui/ImGuiLayer.h"
 
 namespace Hazzel {
 	class HAZZEL_API Application
@@ -27,6 +29,7 @@ namespace Hazzel {
 		bool OnWindowClose(WindowCloseEvent& e); 
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:
