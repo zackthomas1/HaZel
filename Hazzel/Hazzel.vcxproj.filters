@@ -1346,6 +1346,7 @@
     </ClInclude>
     <ClInclude Include="src\Hazzel\Renderer\GraphicContext.h" />
     <ClInclude Include="src\Platform\OpenGl\OpenGLContext.h" />
+    <ClInclude Include="src\Hazzel\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hazzel\Application.cpp">
@@ -1376,5 +1377,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGl\OpenGLContext.cpp" />
+    <ClCompile Include="src\Hazzel\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>
