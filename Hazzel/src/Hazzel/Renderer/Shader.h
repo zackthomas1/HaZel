@@ -7,14 +7,12 @@ namespace Hazzel
 	class Shader
 	{
 	public:
-		Shader(const std::string& vertex_source, const std::string& fragment_source); 
-		~Shader();
+		virtual ~Shader() {}
 
-		void Bind() const; 
-		void Unbind() const; 
+		virtual void Bind() const = 0; 
+		virtual void Unbind() const = 0; 
 
-	private:
-		uint32_t m_RendererID;
+		static Shader* Create(const std::string& vertex_source, const std::string& fragment_source);
 	};
 }
 

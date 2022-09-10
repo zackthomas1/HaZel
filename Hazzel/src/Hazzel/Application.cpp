@@ -13,12 +13,15 @@ namespace Hazzel {
 		HZ_CORE_ASSERT(!s_Instance, "Application already exist!");
 		s_Instance = this;
 
+		//
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(Application::OnEvent));
 		
+		//
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
+		//
 		glGenVertexArrays(1, &m_VertexArray); 
 		glBindVertexArray(m_VertexArray); 
 	
@@ -64,7 +67,7 @@ namespace Hazzel {
 			}
 		)";
 
-		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
 	}
 
 	Application::~Application()

@@ -2,7 +2,7 @@
 
 namespace Hazzel {
 
-	enum class RenderAPI
+	enum class RendererAPI
 	{
 		None = 0, OpenGL = 1
 	};
@@ -10,8 +10,8 @@ namespace Hazzel {
 	class Renderer
 	{
 	public:
-		inline static RenderAPI GetAPI() { return s_RenderAPI; }
+		inline static RendererAPI GetAPI() { return s_RendererAPI; }
 	private:
-		static RenderAPI s_RenderAPI;
+		static RendererAPI s_RendererAPI;
 	};
 }

@@ -140,6 +140,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGl\OpenGLShader.h" />
     <ClInclude Include="src\Hazzel\Renderer\Buffer.h" />
     <ClInclude Include="src\Hazzel\Renderer\Renderer.h" />
     <ClInclude Include="src\Hazzel\Renderer\Shader.h" />
@@ -582,6 +583,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGl\OpenGLShader.cpp" />
     <ClCompile Include="src\Hazzel\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Hazzel\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Hazzel\Renderer\Shader.cpp" />
