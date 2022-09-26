@@ -9,3 +9,4 @@ Hazzel/vendor/
 *.sln
 *.vcxproj
 *.vcxproj.filters
+imgui.ini
