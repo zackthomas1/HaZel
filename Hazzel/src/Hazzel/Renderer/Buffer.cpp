@@ -12,10 +12,10 @@ namespace Hazzel
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:
+		case RendererAPI::API::None:
 			HZ_CORE_ASSERT(false, "RenderAPI::None currently not supported.");
 			return nullptr;
-		case RendererAPI::OpenGL:
+		case RendererAPI::API::OpenGL:
 			return new OpenGLVertexBuffer(vertices, size);
 		default:
 			HZ_CORE_ASSERT(false, "Unknown Renderer API");
@@ -28,10 +28,10 @@ namespace Hazzel
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:
+		case RendererAPI::API::None:
 			HZ_CORE_ASSERT(false, "RenderAPI::None currently not supported.");
 			return nullptr;
-		case RendererAPI::OpenGL:
+		case RendererAPI::API::OpenGL:
 			return new OpenGLIndexBuffer(indices, count);
 		default:
 			HZ_CORE_ASSERT(false, "Unknown Renderer API");
