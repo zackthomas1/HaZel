@@ -13,6 +13,8 @@
 #include "Hazzel/Renderer/Shader.h"
 #include "Hazzel/Renderer/Buffer.h"
 
+#include "Hazzel/Renderer/OrthographicCamera.h"
+
 namespace Hazzel {
 	class HAZZEL_API Application
 	{
@@ -31,7 +33,7 @@ namespace Hazzel {
 		inline Window& getWindow() { return *m_Window; }
 	private: 
 		bool OnWindowClose(WindowCloseEvent& e); 
-
+	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
@@ -40,7 +42,8 @@ namespace Hazzel {
 		std::shared_ptr<Shader> m_Shader;
 		std::shared_ptr<VertexArray> m_VertexArray;
 
-	private:
+		OrthographicCamera m_Camera;
+
 		static Application* s_Instance;
 	};
 
