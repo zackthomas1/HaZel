@@ -9,14 +9,8 @@
 
 #include "ImGui/ImGuiLayer.h"
 
-#include "Hazzel/Renderer/VertexArray.h"
-#include "Hazzel/Renderer/Shader.h"
-#include "Hazzel/Renderer/Buffer.h"
-
-#include "Hazzel/Renderer/OrthographicCamera.h"
-
 namespace Hazzel {
-	class HAZZEL_API Application
+	class Application
 	{
 	public:
 		Application();
@@ -39,11 +33,7 @@ namespace Hazzel {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		OrthographicCamera m_Camera;
-
+	private:
 		static Application* s_Instance;
 	};
 
