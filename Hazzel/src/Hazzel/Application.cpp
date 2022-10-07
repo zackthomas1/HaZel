@@ -1,8 +1,11 @@
 #include "hzpch.h"
 #include "Hazzel/Application.h"
 #include "Hazzel/Input.h"
+#include "Hazzel/Core/TimeStep.h"
 
 #include "Hazzel/Renderer/Renderer.h"
+
+#include <GLFW/glfw3.h> // REFACTOR: Remove glfw dependency from Application class. GetTime call should be plateform specific
 
 namespace Hazzel {
 
@@ -15,6 +18,7 @@ namespace Hazzel {
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(Application::OnEvent));
+		//m_Window->SetVSync(false);
 		
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -29,8 +33,12 @@ namespace Hazzel {
 	{
 		while (m_Running)
 		{
+			float time = (float) glfwGetTime(); // Plateform::GetTime
+			TimeStep timestep = time - m_LastTimeFrame;
+			m_LastTimeFrame = time;
+
 			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 
 			m_ImGuiLayer->Begin(); 
 			for (Layer* layer : m_LayerStack)

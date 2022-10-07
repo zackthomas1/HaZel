@@ -11,9 +11,10 @@ public:
 		m_VertexArray.reset(Hazzel::VertexArray::Create());
 
 		float vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.1f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.2f, 0.8f, 0.1f, 1.0f,
-			 0.0f,  0.5f, 0.0f, 0.2f, 0.1f, 0.8f, 1.0f,
+			// positions			// color (rgba)
+			-0.5f, -0.5f, 0.0f,		0.8f, 0.2f, 0.1f, 1.0f,	// left
+			 0.5f, -0.5f, 0.0f,		0.2f, 0.8f, 0.1f, 1.0f, // right
+			 0.0f,  0.5f, 0.0f,		0.2f, 0.1f, 0.8f, 1.0f, // center
 		};
 
 		std::shared_ptr<Hazzel::VertexBuffer> vertexBuffer;
@@ -66,23 +67,24 @@ public:
 		m_Shader.reset(Hazzel::Shader::Create(vertexSrc, fragmentSrc));
 	}
 
-	void OnUpdate() override
+	void OnUpdate(Hazzel::TimeStep ts) 
 	{
+		//HZ_TRACE("Delta Time: {0} ({1} milliseconds)", ts.GetSeconds(), ts.GetMilliseconds());
 
 		if(Hazzel::Input::IsKeyPressed(HZ_KEY_LEFT))
-			m_CameraPosition.x -= c_CameraSpeed;
+			m_CameraPosition.x -= c_CameraSpeed * ts;
 		else if (Hazzel::Input::IsKeyPressed(HZ_KEY_RIGHT))
-			m_CameraPosition.x += c_CameraSpeed;
+			m_CameraPosition.x += c_CameraSpeed * ts;
 
 		if (Hazzel::Input::IsKeyPressed(HZ_KEY_UP))
-			m_CameraPosition.y += c_CameraSpeed;
+			m_CameraPosition.y += c_CameraSpeed * ts;
 		else if (Hazzel::Input::IsKeyPressed(HZ_KEY_DOWN))
-			m_CameraPosition.y -= c_CameraSpeed;
+			m_CameraPosition.y -= c_CameraSpeed * ts;
 
 		if (Hazzel::Input::IsKeyPressed(HZ_KEY_A))
-			m_CameraRotation -= c_CameraRotationSpeed;
+			m_CameraRotation -= c_CameraRotationSpeed * ts;
 		else if (Hazzel::Input::IsKeyPressed(HZ_KEY_D))
-			m_CameraRotation += c_CameraRotationSpeed;
+			m_CameraRotation += c_CameraRotationSpeed * ts;
 
 		m_Camera.SetPosition(m_CameraPosition);
 		m_Camera.SetRotation(m_CameraRotation);
@@ -150,10 +152,10 @@ private:
 	Hazzel::OrthographicCamera m_Camera;
 	
 	glm::vec3 m_CameraPosition = { 0.f, 0.f, 0.f };
-	const float c_CameraSpeed = .025f;
+	const float c_CameraSpeed = 4.0f;
 
 	float m_CameraRotation = 0.f;
-	const float c_CameraRotationSpeed = 2.0f;
+	const float c_CameraRotationSpeed = 180.0f;
 
 };
 

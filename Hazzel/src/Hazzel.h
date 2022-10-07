@@ -6,6 +6,7 @@
 #include "Hazzel/Layer.h"
 #include "Hazzel/ImGui/ImGuiLayer.h"
 #include "Hazzel/Log.h"
+#include "Hazzel/Core/TimeStep.h"
 
 #include "Hazzel/Input.h"
 #include "Hazzel/KeyCodes.h"

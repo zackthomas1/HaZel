@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Hazzel/Events/Event.h"
+#include "Hazzel/Core/TimeStep.h"
 
 namespace Hazzel {
 
@@ -13,7 +14,7 @@ namespace Hazzel {
 
 		virtual void OnAttach() {} 
 		virtual void OnDetach() {} 
-		virtual void OnUpdate() {} 
+		virtual void OnUpdate(TimeStep ts) {} 
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 

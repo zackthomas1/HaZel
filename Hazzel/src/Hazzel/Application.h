@@ -33,6 +33,9 @@ namespace Hazzel {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
+		float m_LastTimeFrame = 0.0f;
+
+
 	private:
 		static Application* s_Instance;
 	};
