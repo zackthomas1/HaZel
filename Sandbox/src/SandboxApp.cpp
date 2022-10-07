@@ -6,7 +6,7 @@ class ExampleLayer : public Hazzel::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_Transformation(glm::mat4(1.0))
 	{
 		m_VertexArray.reset(Hazzel::VertexArray::Create());
 
@@ -34,6 +34,7 @@ public:
 		std::string vertexSrc = R"(
 			#version 330 core
 
+			uniform mat4 u_ModelMatrix;
 			uniform mat4 u_ViewProjection;
 
 			layout(location = 0) in  vec3 a_Position;
@@ -46,7 +47,7 @@ public:
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0f);
+				gl_Position = u_ViewProjection * u_ModelMatrix * vec4(a_Position, 1.0f);
 			}
 		)";
 
@@ -94,8 +95,17 @@ public:
 
 		{
 			Hazzel::Renderer::BeginScene(m_Camera);
+			
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-			Hazzel::Renderer::Submit(m_Shader, m_VertexArray);
+			for (int i = 0; i < 16; i++)
+			{
+				for (int j = 0; j < 16; j++)
+				{
+					m_Transformation = glm::translate(glm::mat4(1.0f), glm::vec3((j * 0.1f), (i * 0.1f), 0.0f)) * scale;
+					Hazzel::Renderer::Submit(m_Shader, m_VertexArray, m_Transformation);
+				}
+			}
 
 			Hazzel::Renderer::EndScene();
 		}
@@ -157,6 +167,7 @@ private:
 	float m_CameraRotation = 0.f;
 	const float c_CameraRotationSpeed = 180.0f;
 
+	glm::mat4 m_Transformation;
 };
 
 class Sandbox : public Hazzel::Application

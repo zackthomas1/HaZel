@@ -33,6 +33,8 @@ namespace Hazzel {
 	{
 		while (m_Running)
 		{
+
+			// Delta time
 			float time = (float) glfwGetTime(); // Plateform::GetTime
 			TimeStep timestep = time - m_LastTimeFrame;
 			m_LastTimeFrame = time;
