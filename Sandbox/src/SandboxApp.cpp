@@ -6,7 +6,7 @@ class ExampleLayer : public Hazzel::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_Transformation(glm::mat4(1.0))
+		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_ModelTransform(glm::mat4(1.0))
 	{
 		m_VertexArray.reset(Hazzel::VertexArray::Create());
 
@@ -45,7 +45,7 @@ public:
 
 			void main()
 			{
-				v_Position = a_Position;
+				v_Position = vec3(u_ModelMatrix * vec4(a_Position, 1.0));
 				v_Color = a_Color;
 				gl_Position = u_ViewProjection * u_ModelMatrix * vec4(a_Position, 1.0f);
 			}
@@ -59,10 +59,13 @@ public:
 			in vec3 v_Position;
 			in vec4 v_Color;
 
+			uniform vec4 u_InputColor;
+
 			void main()
 			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0);
-				color = v_Color;
+				// color = vec4(v_Position * 0.5 + 0.5, 1.0);
+				// color = v_Color;
+				color = u_InputColor;
 			}
 		)";
 		m_Shader.reset(Hazzel::Shader::Create(vertexSrc, fragmentSrc));
@@ -94,16 +97,20 @@ public:
 		Hazzel::RenderCommand::Clear();
 
 		{
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+			glm::vec4 redColor = { 0.5f, 0.1f, 0.1f, 1.0f };
+			glm::vec4 blueColor = { 0.1f, 0.1f, 0.5f, 1.0f };
+
 			Hazzel::Renderer::BeginScene(m_Camera);
 			
-			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)
 				{
-					m_Transformation = glm::translate(glm::mat4(1.0f), glm::vec3((j * 0.1f), (i * 0.1f), 0.0f)) * scale;
-					Hazzel::Renderer::Submit(m_Shader, m_VertexArray, m_Transformation);
+					m_ModelTransform = glm::translate(glm::mat4(1.0f), glm::vec3((j * 0.1f), (i * 0.1f), 0.0f)) * scale;
+					m_Shader->Bind(); 
+					m_Shader->UploadUniformVec4fv("u_InputColor", i % 2 == 0 ? redColor : blueColor);
+					Hazzel::Renderer::Submit(m_Shader, m_VertexArray, m_ModelTransform);
 				}
 			}
 
@@ -167,7 +174,7 @@ private:
 	float m_CameraRotation = 0.f;
 	const float c_CameraRotationSpeed = 180.0f;
 
-	glm::mat4 m_Transformation;
+	glm::mat4 m_ModelTransform;
 };
 
 class Sandbox : public Hazzel::Application

@@ -14,6 +14,8 @@ namespace Hazzel
 		virtual void Unbind() const override;
 
 		virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) override;
+		virtual void UploadUniformVec4fv(const std::string& name, const glm::vec4& vec) override;
+
 	private:
 		uint32_t m_RendererID; 
 	};

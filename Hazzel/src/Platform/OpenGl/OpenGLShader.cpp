@@ -136,3 +136,9 @@ void Hazzel::OpenGLShader::UploadUniformMat4(const std::string& name, const glm:
 	GLint uniformLocation = glGetUniformLocation(m_RendererID, name.c_str());
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
 }
+
+void Hazzel::OpenGLShader::UploadUniformVec4fv(const std::string& name, const glm::vec4& vec)
+{
+	GLint uniformLocation = glGetUniformLocation(m_RendererID, name.c_str());
+	glUniform4fv(uniformLocation, 1, glm::value_ptr(vec));
+}
