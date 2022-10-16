@@ -1,8 +1,6 @@
 #pragma once
 
 #include <string>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace Hazzel
 {
@@ -13,9 +11,6 @@ namespace Hazzel
 
 		virtual void Bind() const = 0; 
 		virtual void Unbind() const = 0; 
-
-		virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) = 0;
-		virtual void UploadUniformVec4fv(const std::string& name, const glm::vec4& vec) = 0;
 
 		static Shader* Create(const std::string& vertex_source, const std::string& fragment_source);
 	};

@@ -1,6 +1,10 @@
 #include <Hazzel.h>
+#include "Platform/OpenGl/OpenGLShader.h"
 
 #include "imgui/imgui.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Hazzel::Layer 
 {
@@ -97,19 +101,17 @@ public:
 		Hazzel::RenderCommand::Clear();
 
 		{
-			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-			glm::vec4 redColor = { 0.5f, 0.1f, 0.1f, 1.0f };
-			glm::vec4 blueColor = { 0.1f, 0.1f, 0.5f, 1.0f };
-
 			Hazzel::Renderer::BeginScene(m_Camera);
-			
+
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_Shader)->Bind();
+			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_Shader)->UploadUniformFloat4("u_InputColor", m_TriangleColor);
+
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)
 				{
 					m_ModelTransform = glm::translate(glm::mat4(1.0f), glm::vec3((j * 0.1f), (i * 0.1f), 0.0f)) * scale;
-					m_Shader->Bind(); 
-					m_Shader->UploadUniformVec4fv("u_InputColor", i % 2 == 0 ? redColor : blueColor);
 					Hazzel::Renderer::Submit(m_Shader, m_VertexArray, m_ModelTransform);
 				}
 			}
@@ -121,7 +123,7 @@ public:
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("Test!");
-		ImGui::Text("Hello World");
+		ImGui::ColorEdit4("Triangle Color", glm::value_ptr(m_TriangleColor));
 		ImGui::End();
 	}
 
@@ -175,6 +177,8 @@ private:
 	const float c_CameraRotationSpeed = 180.0f;
 
 	glm::mat4 m_ModelTransform;
+
+	glm::vec4 m_TriangleColor = { 0.1f, 0.25f, 0.5f, 1.0f };
 };
 
 class Sandbox : public Hazzel::Application
