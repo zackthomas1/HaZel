@@ -20,6 +20,7 @@
 #include "Hazzel/Renderer/Buffer.h"
 #include "Hazzel/Renderer/VertexArray.h"
 #include "Hazzel/Renderer/Shader.h"
+#include "Hazzel/Renderer/Texture.h"
 
 #include "Hazzel/Renderer/OrthographicCamera.h"
 // -----------------------------

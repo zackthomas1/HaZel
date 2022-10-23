@@ -1,4 +1,5 @@
 #include <Hazzel.h>
+
 #include "Platform/OpenGl/OpenGLShader.h"
 
 #include "imgui/imgui.h"
@@ -12,7 +13,10 @@ public:
 	ExampleLayer()
 		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_ModelTransform(glm::mat4(1.0))
 	{
-		m_VertexArray.reset(Hazzel::VertexArray::Create());
+		// -----------
+		// Triangle
+		// -----------
+		m_TriangleVertexArray.reset(Hazzel::VertexArray::Create());
 
 		float vertices[3 * 7] = {
 			// positions			// color (rgba)
@@ -21,21 +25,21 @@ public:
 			 0.0f,  0.5f, 0.0f,		0.2f, 0.1f, 0.8f, 1.0f, // center
 		};
 
-		std::shared_ptr<Hazzel::VertexBuffer> vertexBuffer;
+		Hazzel::Ref<Hazzel::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Hazzel::VertexBuffer::Create(vertices, sizeof(vertices)));
 		Hazzel::BufferLayout layout = {
 			{Hazzel::ShaderDataType::Float3, "a_Position"},
 			{Hazzel::ShaderDataType::Float4, "a_Color"},
 		};
 		vertexBuffer->SetLayout(layout);
-		m_VertexArray->AddVertexBuffer(vertexBuffer);
+		m_TriangleVertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Hazzel::IndexBuffer> indexBuffer;
+		Hazzel::Ref<Hazzel::IndexBuffer> indexBuffer;
 		indexBuffer.reset(Hazzel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-		m_VertexArray->SetIndexBuffer(indexBuffer);
+		m_TriangleVertexArray->SetIndexBuffer(indexBuffer);
 
-		std::string vertexSrc = R"(
+		std::string colorSelectVertexSrc = R"(
 			#version 330 core
 
 			uniform mat4 u_ModelMatrix;
@@ -44,41 +48,98 @@ public:
 			layout(location = 0) in  vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
 
-			out vec3 v_Position;
-			out vec4 v_Color;
-
 			void main()
 			{
-				v_Position = vec3(u_ModelMatrix * vec4(a_Position, 1.0));
-				v_Color = a_Color;
 				gl_Position = u_ViewProjection * u_ModelMatrix * vec4(a_Position, 1.0f);
 			}
 		)";
 
-		std::string fragmentSrc = R"(
+		std::string colorSelectFragmentSrc = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-			in vec4 v_Color;
 
 			uniform vec4 u_InputColor;
 
 			void main()
 			{
-				// color = vec4(v_Position * 0.5 + 0.5, 1.0);
-				// color = v_Color;
 				color = u_InputColor;
 			}
 		)";
-		m_Shader.reset(Hazzel::Shader::Create(vertexSrc, fragmentSrc));
+		m_ColorSelectShader.reset(Hazzel::Shader::Create(colorSelectVertexSrc, colorSelectFragmentSrc));
+
+		// -----------
+		// Square
+		// -----------
+		
+		m_SquareVertexArray.reset(Hazzel::VertexArray::Create());
+
+		float squareVertices[4 * 5] = {
+			// position				// texture coordinate
+			-0.5f, -0.5f, 0.0f,		0.0f, 0.0f,				// bottom-left
+			 0.5f, -0.5f, 0.0f,		1.0f, 0.0f,				// bottom-right
+			 0.5f,  0.5f, 0.0f,		1.0f, 1.0f,				// top-right
+			-0.5f,  0.5f, 0.0f,		0.0f, 1.0f,				// top-left
+		};
+
+		Hazzel::Ref<Hazzel::VertexBuffer> squareVertexBuffer;
+		squareVertexBuffer.reset(Hazzel::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		Hazzel::BufferLayout squareLayout = {
+			{Hazzel::ShaderDataType::Float3, "a_Position"},
+			{Hazzel::ShaderDataType::Float2, "a_TexCoord"},
+		};
+		squareVertexBuffer->SetLayout(squareLayout);
+		m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
+	
+		uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
+		Hazzel::Ref<Hazzel::IndexBuffer> squareIndexBuffer; 
+		squareIndexBuffer.reset(Hazzel::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
+
+		std::string textureVertexShader = R"(
+			#version 330 core
+
+			uniform mat4 u_ViewProjection;
+
+			layout(location = 0) in vec3 a_Position; 
+			layout(location = 1) in vec2 a_TexCoord; 
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0f);
+			} 
+		)";
+
+		std::string textureFragmentShader = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
+
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+		)";
+		m_TextureShader.reset(Hazzel::Shader::Create(textureVertexShader, textureFragmentShader));
+
+		m_CheckerboardTexture = Hazzel::Texture2D::Create("assets/textures/Checkerboard.png");
+
+		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Hazzel::TimeStep ts) 
 	{
 		//HZ_TRACE("Delta Time: {0} ({1} milliseconds)", ts.GetSeconds(), ts.GetMilliseconds());
 
+		// Input
 		if(Hazzel::Input::IsKeyPressed(HZ_KEY_LEFT))
 			m_CameraPosition.x -= c_CameraSpeed * ts;
 		else if (Hazzel::Input::IsKeyPressed(HZ_KEY_RIGHT))
@@ -100,21 +161,25 @@ public:
 		Hazzel::RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1));
 		Hazzel::RenderCommand::Clear();
 
+		// Draw
 		{
 			Hazzel::Renderer::BeginScene(m_Camera);
 
 			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_Shader)->Bind();
-			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_Shader)->UploadUniformFloat4("u_InputColor", m_TriangleColor);
+			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_ColorSelectShader)->Bind();
+			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_ColorSelectShader)->UploadUniformFloat4("u_InputColor", m_FlateColor);
 
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)
 				{
-					m_ModelTransform = glm::translate(glm::mat4(1.0f), glm::vec3((j * 0.1f), (i * 0.1f), 0.0f)) * scale;
-					Hazzel::Renderer::Submit(m_Shader, m_VertexArray, m_ModelTransform);
+					m_ModelTransform = glm::translate(glm::mat4(1.0f), glm::vec3((j * 0.11f), (i * 0.11f), 0.0f)) * scale;
+					Hazzel::Renderer::Submit(m_ColorSelectShader, m_SquareVertexArray, m_ModelTransform);
 				}
 			}
+
+			m_CheckerboardTexture->Bind();
+			Hazzel::Renderer::Submit(m_TextureShader, m_SquareVertexArray);
 
 			Hazzel::Renderer::EndScene();
 		}
@@ -123,7 +188,7 @@ public:
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("Test!");
-		ImGui::ColorEdit4("Triangle Color", glm::value_ptr(m_TriangleColor));
+		ImGui::ColorEdit4("Triangle Color", glm::value_ptr(m_FlateColor));
 		ImGui::End();
 	}
 
@@ -165,8 +230,9 @@ public:
 	}
 
 private:
-	std::shared_ptr<Hazzel::Shader> m_Shader;
-	std::shared_ptr<Hazzel::VertexArray> m_VertexArray;
+	Hazzel::Ref<Hazzel::Shader> m_ColorSelectShader, m_TextureShader;
+	Hazzel::Ref<Hazzel::VertexArray> m_TriangleVertexArray, m_SquareVertexArray;
+	Hazzel::Ref<Hazzel::Texture2D> m_CheckerboardTexture;
 
 	Hazzel::OrthographicCamera m_Camera;
 	
@@ -178,7 +244,7 @@ private:
 
 	glm::mat4 m_ModelTransform;
 
-	glm::vec4 m_TriangleColor = { 0.1f, 0.25f, 0.5f, 1.0f };
+	glm::vec4 m_FlateColor = { 0.1f, 0.25f, 0.5f, 1.0f };
 };
 
 class Sandbox : public Hazzel::Application

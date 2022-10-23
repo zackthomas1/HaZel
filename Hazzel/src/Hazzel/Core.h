@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 #ifdef HZ_PLATFORM_WINDOWS
 	#if HZ_DYNAMIC_LINK
@@ -29,3 +30,20 @@
 #define HZ_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
 #define BIT(x) (1 << x)
+
+namespace Hazzel {
+
+	/// <summary>
+	/// Hazzel specfic scoped pointer (ie. std::unique_ptr).
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	template<typename T> 
+	using Scope = std::unique_ptr<T>;
+	
+	/// <summary>
+	/// Hazzel specfic reference pointer (ie. std::shared_ptr).
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}

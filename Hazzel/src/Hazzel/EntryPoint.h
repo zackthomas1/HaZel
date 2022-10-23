@@ -7,8 +7,8 @@ extern Hazzel::Application* Hazzel::CreateApplication();
 int main(int argc, char** argv)
 {
 	Hazzel::Log::Init();
-	HZ_CORE_WARN("Initialized Log!"); 
-	HZ_WARN("Hello World!");
+	HZ_CORE_WARN("Initialized Log"); 
+	HZ_WARN("Initializing Application");
 
 	auto app = Hazzel::CreateApplication();
 	app->Run();
