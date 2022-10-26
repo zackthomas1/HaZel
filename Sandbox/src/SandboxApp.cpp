@@ -130,6 +130,7 @@ public:
 		m_TextureShader.reset(Hazzel::Shader::Create(textureVertexShader, textureFragmentShader));
 
 		m_CheckerboardTexture = Hazzel::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_ChernoTexture = Hazzel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
 		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -165,6 +166,7 @@ public:
 		{
 			Hazzel::Renderer::BeginScene(m_Camera);
 
+			// Render flat shaded square matrix
 			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_ColorSelectShader)->Bind();
 			std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_ColorSelectShader)->UploadUniformFloat4("u_InputColor", m_FlateColor);
@@ -178,7 +180,12 @@ public:
 				}
 			}
 
-			m_CheckerboardTexture->Bind();
+			// Render Checkerboard
+			m_CheckerboardTexture->Bind(0);
+			Hazzel::Renderer::Submit(m_TextureShader, m_SquareVertexArray);
+
+			// Render Cherno Logo
+			m_ChernoTexture->Bind(0);
 			Hazzel::Renderer::Submit(m_TextureShader, m_SquareVertexArray);
 
 			Hazzel::Renderer::EndScene();
@@ -188,7 +195,7 @@ public:
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("Test!");
-		ImGui::ColorEdit4("Triangle Color", glm::value_ptr(m_FlateColor));
+		ImGui::ColorEdit4("Flat Color", glm::value_ptr(m_FlateColor));
 		ImGui::End();
 	}
 
@@ -232,7 +239,7 @@ public:
 private:
 	Hazzel::Ref<Hazzel::Shader> m_ColorSelectShader, m_TextureShader;
 	Hazzel::Ref<Hazzel::VertexArray> m_TriangleVertexArray, m_SquareVertexArray;
-	Hazzel::Ref<Hazzel::Texture2D> m_CheckerboardTexture;
+	Hazzel::Ref<Hazzel::Texture2D> m_CheckerboardTexture, m_ChernoTexture;
 
 	Hazzel::OrthographicCamera m_Camera;
 	
