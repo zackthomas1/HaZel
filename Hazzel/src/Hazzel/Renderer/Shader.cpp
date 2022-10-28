@@ -6,6 +6,21 @@
 
 namespace Hazzel
 {
+	Shader* Shader::Create(const std::string& path)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			HZ_CORE_ASSERT(false, "RenderAPI::None currently not supported.");
+			return nullptr;
+		case RendererAPI::API::OpenGL:
+			return new OpenGLShader(path);
+		default:
+			HZ_CORE_ASSERT(false, "Unknown Renderer API.");
+			return nullptr;
+		}
+	}
+
 	Shader* Shader::Create(const std::string& vertex_source, const std::string& fragment_source)
 	{
 		switch (Renderer::GetAPI())
