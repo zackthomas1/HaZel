@@ -18,7 +18,7 @@ namespace Hazzel {
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(Application::OnEvent));
-		//m_Window->SetVSync(false);
+		//m_Window->SetVSync(false); // Enable VSync. Disable unsynce framerate wanted
 
 		Renderer::Init();
 		
@@ -35,7 +35,6 @@ namespace Hazzel {
 	{
 		while (m_Running)
 		{
-
 			// Delta time
 			float time = (float) glfwGetTime(); // Plateform::GetTime
 			TimeStep timestep = time - m_LastTimeFrame;

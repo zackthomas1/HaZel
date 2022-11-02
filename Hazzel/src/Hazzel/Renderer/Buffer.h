@@ -112,6 +112,12 @@ namespace Hazzel
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="vertices">: Pointer to array containing vertex data</param>
+		/// <param name="size">: Size of vertex array in bytes, ie. (sizeof(vertices))</param>
+		/// <returns></returns>
 		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 	};
 
@@ -125,6 +131,12 @@ namespace Hazzel
 
 		virtual uint32_t GetCount() const = 0;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="indices">: Pointer of array contain index data</param>
+		/// <param name="count">: Number of elements in index array, ie. (sizeof(indices) / sizeof(uint32_t))</param>
+		/// <returns></returns>
 		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
 	};
 }

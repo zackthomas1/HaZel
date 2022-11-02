@@ -116,21 +116,21 @@ namespace Hazzel {
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
 		std::ifstream in(filepath, std::ios::in | std::ios::binary); 
-		std::string result;
+		std::string source;
 
 		if (in)
 		{
 			// read file stream into string
 			in.seekg(0, in.end);
-			result.resize(in.tellg());
+			source.resize(in.tellg());
 			in.seekg(0, in.beg);
-			in.read(&result[0], result.size());
+			in.read(&source[0], source.size());
 			in.close();
 		}
 		else {
 			HZ_CORE_ERROR("Could not open file '{0}'", filepath);
 		}
-		return result;
+		return source;
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)

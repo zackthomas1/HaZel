@@ -41,7 +41,7 @@ namespace Hazzel {
 
 		if (!s_GLFWInitialized)
 		{
-			// TODO: glfwTerminate on system shutdown
+			// glfwTerminate on system shutdown
 			int success = glfwInit(); 
 			HZ_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
