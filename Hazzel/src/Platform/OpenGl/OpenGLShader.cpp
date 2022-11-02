@@ -30,9 +30,20 @@ namespace Hazzel {
 		std::string source = ReadFile(path); 
 		std::unordered_map<GLenum, std::string> shaderSources = PreProcess(source); 
 		Compile(shaderSources);
+	
+		// parse shader name from filepath
+		// example filepath string 'assets/shaders/Texture.glsl'
+		size_t lastSlash = path.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? lastSlash = 0 : lastSlash + 1;
+
+		size_t lastDot = path.rfind('.'); 
+		lastDot = lastDot == std::string::npos ? path.length() : lastDot;
+
+		m_Name = path.substr(lastSlash, lastDot - lastSlash);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertex_source, const std::string& fragment_source)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertex_source, const std::string& fragment_source)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> shaderSources; 
 		shaderSources[GL_VERTEX_SHADER] = vertex_source;
@@ -53,6 +64,11 @@ namespace Hazzel {
 	void OpenGLShader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	std::string OpenGLShader::GetName() const
+	{
+		return m_Name;
 	}
 
 	void OpenGLShader::UploadUniformInt(const std::string& name, const int value)
@@ -99,7 +115,7 @@ namespace Hazzel {
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
-		std::ifstream in(filepath, std::ios::in, std::ios::binary); 
+		std::ifstream in(filepath, std::ios::in | std::ios::binary); 
 		std::string result;
 
 		if (in)
@@ -137,7 +153,7 @@ namespace Hazzel {
 			std::string shaderSource = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 
 			shaderSources[ShaderTypeFromString(shaderType)] = shaderSource;
-			HZ_CORE_TRACE("source file:\n{0}", shaderSource);
+			//HZ_CORE_TRACE("source file:\n{0}", shaderSource);
 		}
 		return shaderSources;
 	}
@@ -146,7 +162,9 @@ namespace Hazzel {
 	{
 		GLuint program = glCreateProgram();
 
-		std::vector<GLuint> glShaderIDs(shaderSources.size()); 
+		HZ_CORE_ASSERT(shaderSources.size() <= 2, "Supports 2 shaders currently.");
+		std::array<GLuint, 2> glShaderIDs;
+		uint32_t glShaderIDsIndex = 0;
 
 		for (auto& kv : shaderSources) {
 			GLenum type = kv.first; 
@@ -187,7 +205,7 @@ namespace Hazzel {
 			}
 
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDsIndex++] = shader;
 		}
 
 		m_RendererID = program;

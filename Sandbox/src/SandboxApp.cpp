@@ -66,7 +66,6 @@ public:
 				color = u_InputColor;
 			}
 		)";
-		m_ColorSelectShader.reset(Hazzel::Shader::Create(colorSelectVertexSrc, colorSelectFragmentSrc));
 
 		// -----------
 		// Square
@@ -96,13 +95,19 @@ public:
 		squareIndexBuffer.reset(Hazzel::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
-		m_TextureShader.reset(Hazzel::Shader::Create("assets/shaders/Texture.glsl"));
+		// -----------
+		// Shaders 
+		// -----------
+		m_ColorSelectShader = Hazzel::Shader::Create("Color Select", colorSelectVertexSrc, colorSelectFragmentSrc);
+
+
+		Hazzel::Ref<Hazzel::Shader> textureShader = m_ShaderLib.Load("assets/shaders/Texture.glsl");
 
 		m_CheckerboardTexture = Hazzel::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_ChernoTexture = Hazzel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Hazzel::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Hazzel::TimeStep ts) 
@@ -150,12 +155,15 @@ public:
 			}
 
 			// Render Checkerboard
+
+			Hazzel::Ref<Hazzel::Shader> textureShader = m_ShaderLib.Get("Texture");
+
 			m_CheckerboardTexture->Bind(0);
-			Hazzel::Renderer::Submit(m_TextureShader, m_SquareVertexArray);
+			Hazzel::Renderer::Submit(textureShader, m_SquareVertexArray);
 
 			// Render Cherno Logo
 			m_ChernoTexture->Bind(0);
-			Hazzel::Renderer::Submit(m_TextureShader, m_SquareVertexArray);
+			Hazzel::Renderer::Submit(textureShader, m_SquareVertexArray);
 
 			Hazzel::Renderer::EndScene();
 		}
@@ -206,7 +214,8 @@ public:
 	}
 
 private:
-	Hazzel::Ref<Hazzel::Shader> m_ColorSelectShader, m_TextureShader;
+	Hazzel::ShaderLibrary m_ShaderLib;
+	Hazzel::Ref<Hazzel::Shader> m_ColorSelectShader;
 	Hazzel::Ref<Hazzel::VertexArray> m_TriangleVertexArray, m_SquareVertexArray;
 	Hazzel::Ref<Hazzel::Texture2D> m_CheckerboardTexture, m_ChernoTexture;
 

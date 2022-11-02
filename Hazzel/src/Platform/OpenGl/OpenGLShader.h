@@ -13,11 +13,13 @@ namespace Hazzel
 	{
 	public:
 		OpenGLShader(const std::string& path);
-		OpenGLShader(const std::string& vertex_source, const std::string& fragment_source);
+		OpenGLShader(const std::string& name, const std::string& vertex_source, const std::string& fragment_source);
 		virtual ~OpenGLShader(); 
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual std::string GetName() const override;
 
 		void UploadUniformInt(const std::string& name, const int value);
 
@@ -35,6 +37,7 @@ namespace Hazzel
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	private:
 		uint32_t m_RendererID; 
+		std::string m_Name;
 	};
 }
 
