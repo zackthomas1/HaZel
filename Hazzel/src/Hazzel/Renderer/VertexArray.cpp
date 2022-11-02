@@ -6,7 +6,7 @@
 
 namespace Hazzel
 {
-    VertexArray* VertexArray::Create()
+    Ref<VertexArray> VertexArray::Create()
     {
 		switch (Renderer::GetAPI())
 		{
@@ -14,7 +14,7 @@ namespace Hazzel
 			HZ_CORE_ASSERT(false, "RenderAPI::None currently not supported.");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLVertexArray();
+			return std::make_shared<OpenGLVertexArray>();
 		default:
 			HZ_CORE_ASSERT(false, "Unknown Renderer API");
 			return nullptr;
