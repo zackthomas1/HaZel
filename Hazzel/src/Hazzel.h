@@ -23,6 +23,7 @@
 #include "Hazzel/Renderer/Texture.h"
 
 #include "Hazzel/Renderer/OrthographicCamera.h"
+#include "Hazzel/Renderer/PerspectiveCamera.h"
 // -----------------------------
 
 
