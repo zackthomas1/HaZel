@@ -11,12 +11,12 @@ class ExampleLayer : public Hazzel::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_ModelTransform(glm::mat4(1.0))
+		:Layer("Example"), m_CameraController(1280.0f/720.0f, true), m_ModelTransform(glm::mat4(1.0))
 	{
 		// -----------
 		// Triangle
 		// -----------
-		m_TriangleVertexArray.reset(Hazzel::VertexArray::Create());
+		m_TriangleVertexArray = Hazzel::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			// positions			// color (rgba)
@@ -26,7 +26,7 @@ public:
 		};
 
 		Hazzel::Ref<Hazzel::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Hazzel::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = Hazzel::VertexBuffer::Create(vertices, sizeof(vertices));
 		Hazzel::BufferLayout layout = {
 			{Hazzel::ShaderDataType::Float3, "a_Position"},
 			{Hazzel::ShaderDataType::Float4, "a_Color"},
@@ -36,7 +36,7 @@ public:
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		Hazzel::Ref<Hazzel::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Hazzel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = Hazzel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_TriangleVertexArray->SetIndexBuffer(indexBuffer);
 
 		std::string colorSelectVertexSrc = R"(
@@ -71,7 +71,7 @@ public:
 		// Square
 		// -----------
 		
-		m_SquareVertexArray.reset(Hazzel::VertexArray::Create());
+		m_SquareVertexArray = Hazzel::VertexArray::Create();
 
 		float squareVertices[4 * 5] = {
 			// position				// texture coordinate
@@ -82,7 +82,7 @@ public:
 		};
 
 		Hazzel::Ref<Hazzel::VertexBuffer> squareVertexBuffer;
-		squareVertexBuffer.reset(Hazzel::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVertexBuffer = Hazzel::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		Hazzel::BufferLayout squareLayout = {
 			{Hazzel::ShaderDataType::Float3, "a_Position"},
 			{Hazzel::ShaderDataType::Float2, "a_TexCoord"},
@@ -92,7 +92,7 @@ public:
 	
 		uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
 		Hazzel::Ref<Hazzel::IndexBuffer> squareIndexBuffer; 
-		squareIndexBuffer.reset(Hazzel::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIndexBuffer = Hazzel::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
 		// -----------
@@ -114,31 +114,15 @@ public:
 	{
 		//HZ_TRACE("Delta Time: {0} ({1} milliseconds)", ts.GetSeconds(), ts.GetMilliseconds());
 
-		// Input
-		if(Hazzel::Input::IsKeyPressed(HZ_KEY_LEFT))
-			m_CameraPosition.x -= c_CameraSpeed * ts;
-		else if (Hazzel::Input::IsKeyPressed(HZ_KEY_RIGHT))
-			m_CameraPosition.x += c_CameraSpeed * ts;
+		// Update
+		m_CameraController.OnUpdate(ts);
 
-		if (Hazzel::Input::IsKeyPressed(HZ_KEY_UP))
-			m_CameraPosition.y += c_CameraSpeed * ts;
-		else if (Hazzel::Input::IsKeyPressed(HZ_KEY_DOWN))
-			m_CameraPosition.y -= c_CameraSpeed * ts;
-
-		if (Hazzel::Input::IsKeyPressed(HZ_KEY_A))
-			m_CameraRotation -= c_CameraRotationSpeed * ts;
-		else if (Hazzel::Input::IsKeyPressed(HZ_KEY_D))
-			m_CameraRotation += c_CameraRotationSpeed * ts;
-
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
+		// Render
 		Hazzel::RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1));
 		Hazzel::RenderCommand::Clear();
-
-		// Draw
+		
 		{
-			Hazzel::Renderer::BeginScene(m_Camera);
+			Hazzel::Renderer::BeginScene(m_CameraController.GetCamera());
 
 			// Render flat shaded square matrix
 			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
@@ -178,39 +162,7 @@ public:
 
 	void OnEvent(Hazzel::Event& event) override
 	{
-		Hazzel::EventDispatcher dispatcher(event);
-		//dispatcher.Dispatch <Hazzel::KeyPressedEvent>(HZ_BIND_EVENT_FN(ExampleLayer::OnKeyPressed)); 
-	}
-
-	bool OnKeyPressed(Hazzel::KeyPressedEvent& event)
-	{
-		switch (event.GetKeyCode())
-		{
-		case HZ_KEY_LEFT:
-			m_CameraPosition.x -= c_CameraSpeed;
-			break;
-		case HZ_KEY_RIGHT:
-			m_CameraPosition.x += c_CameraSpeed;
-			break;
-		case HZ_KEY_UP:
-			m_CameraPosition.y += c_CameraSpeed;
-			break;
-		case HZ_KEY_DOWN:
-			m_CameraPosition.y -= c_CameraSpeed;
-			break;
-		case HZ_KEY_A:
-			m_CameraRotation -= c_CameraRotationSpeed;
-			break;
-		case HZ_KEY_D:
-			m_CameraRotation += c_CameraRotationSpeed;
-			break;
-		default:
-			break;
-		}
-
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-		return false;
+		m_CameraController.OnEvent(event);
 	}
 
 private:
@@ -219,16 +171,9 @@ private:
 	Hazzel::Ref<Hazzel::VertexArray> m_TriangleVertexArray, m_SquareVertexArray;
 	Hazzel::Ref<Hazzel::Texture2D> m_CheckerboardTexture, m_ChernoTexture;
 
-	Hazzel::OrthographicCamera m_Camera;
-	
-	glm::vec3 m_CameraPosition = { 0.f, 0.f, 0.f };
-	const float c_CameraSpeed = 4.0f;
-
-	float m_CameraRotation = 0.f;
-	const float c_CameraRotationSpeed = 180.0f;
+	Hazzel::OrthographicCameraController m_CameraController;
 
 	glm::mat4 m_ModelTransform;
-
 	glm::vec4 m_FlateColor = { 0.1f, 0.25f, 0.5f, 1.0f };
 };
 
