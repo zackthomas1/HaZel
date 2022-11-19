@@ -63,6 +63,8 @@ namespace Hazzel {
 				data.Width = width;
 				data.Height = height;
 
+				//HZ_CORE_INFO("Width-Height: {0},{1}", data.Width, data.Height);
+
 				WindowResizeEvent event(width, height);
 				data.EventCallback(event);
 		});

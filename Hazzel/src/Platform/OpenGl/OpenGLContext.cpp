@@ -21,7 +21,6 @@ void Hazzel::OpenGLContext::Init()
 	HZ_CORE_INFO("\t Vendor: {0}", glGetString(GL_VENDOR));
 	HZ_CORE_INFO("\t Render: {0}", glGetString(GL_RENDERER));
 	HZ_CORE_INFO("\t Version: {0}", glGetString(GL_VERSION));
-
 }
 
 void Hazzel::OpenGLContext::SwapBuffer()
