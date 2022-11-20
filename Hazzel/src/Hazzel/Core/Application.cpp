@@ -1,6 +1,6 @@
 #include "hzpch.h"
-#include "Hazzel/Application.h"
-#include "Hazzel/Input.h"
+#include "Hazzel/Core/Application.h"
+#include "Hazzel/Core/Input.h"
 #include "Hazzel/Core/TimeStep.h"
 
 #include "Hazzel/Renderer/Renderer.h"

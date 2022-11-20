@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hazzel/Core.h"
+#include "Hazzel/Core/Core.h"
 
 namespace Hazzel {
 	class HAZZEL_API Input

@@ -2,19 +2,23 @@
 
 // For use by Hazel applications 
 
-#include "Hazzel/Application.h"
-#include "Hazzel/Layer.h"
-#include "Hazzel/ImGui/ImGuiLayer.h"
-#include "Hazzel/Log.h"
+// --- Core -------------
+#include "Hazzel/Core/Application.h"
+#include "Hazzel/Core/Layer.h"
+#include "Hazzel/Core/Log.h"
 
 #include "Hazzel/Core/TimeStep.h"
 
-#include "Hazzel/Input.h"
-#include "Hazzel/KeyCodes.h"
-#include "Hazzel/MouseButonCodes.h"
-#include "Hazzel/OrthographicCameraController.h"
+#include "Hazzel/Core/Input.h"
+#include "Hazzel/Core/KeyCodes.h"
+#include "Hazzel/Core/MouseButonCodes.h"
+// --------------------------
+
+#include "Hazzel/ImGui/ImGuiLayer.h"
 
 // --- Renderer -------------
+#include "Hazzel/Renderer/OrthographicCameraController.h"
+
 #include "Hazzel/Renderer/Renderer.h"
 #include "Hazzel/Renderer/RenderCommand.h"
 
@@ -24,9 +28,9 @@
 #include "Hazzel/Renderer/Texture.h"
 
 #include "Hazzel/Renderer/OrthographicCamera.h"
-// -----------------------------
+// --------------------------
 
 
 // --- Entry Point -------------
-#include "Hazzel/EntryPoint.h"
+#include "Hazzel/Core/EntryPoint.h"
 // -----------------------------

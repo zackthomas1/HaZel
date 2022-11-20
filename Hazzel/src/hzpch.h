@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Hazzel/Log.h"
+#include "Hazzel/Core/Log.h"
 
 #ifdef HZ_PLATFORM_WINDOWS
 	#include <Windows.h>

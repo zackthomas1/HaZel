@@ -4,10 +4,10 @@
 
 #include "Window.h"
 #include "LayerStack.h"
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
+#include "Hazzel/Events/Event.h"
+#include "Hazzel/Events/ApplicationEvent.h"
 
-#include "ImGui/ImGuiLayer.h"
+#include "Hazzel/ImGui/ImGuiLayer.h"
 
 namespace Hazzel {
 	class Application

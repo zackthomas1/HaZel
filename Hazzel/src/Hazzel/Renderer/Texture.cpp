@@ -1,6 +1,6 @@
 #include "hzpch.h"
 #include "Renderer.h"
-#include "Hazzel/Core.h"
+#include "Hazzel/Core/Core.h"
 #include "Texture.h"
 
 #include "Platform/OpenGl/OpenGLTexture.h"

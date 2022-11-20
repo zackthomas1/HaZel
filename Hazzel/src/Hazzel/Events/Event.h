@@ -1,6 +1,6 @@
 #pragma once
 #include "hzpch.h"
-#include "Hazzel/Core.h"
+#include "Hazzel/Core/Core.h"
 
 namespace Hazzel {
 
